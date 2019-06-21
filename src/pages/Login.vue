@@ -17,6 +17,11 @@ export default {
       password: '',
     };
   },
+  mounted() {
+    if (localStorage.getItem('accessToken')) {
+      this.$router.push('/home');
+    }
+  },
   methods:{
     async validate() {
       try {
