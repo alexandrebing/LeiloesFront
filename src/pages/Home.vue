@@ -53,6 +53,7 @@ export default {
           this.$router.push('/');
         });
 
+        const self = this
         console.log*("res")
         const gameID = {
             gameID: 10000
@@ -60,6 +61,7 @@ export default {
         getAuctions()
         .then( res => {
             console.log(res)
+            self.items = res.data
         })
 
     },
