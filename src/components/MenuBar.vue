@@ -8,7 +8,7 @@
                 <a href="/new-auction">Novo Leilão</a>
             </li>
             <LI>
-                <a href="/">Sair</a>
+                <a href="#" @click="logout">Sair</a>
             </LI>
         </ul>
     </div>
@@ -16,7 +16,12 @@
 
 <script>
 export default {
-    
+    methods: {
+      logout() {
+        localStorage.removeItem('accessToken');
+        this.$router.push('/');
+      }
+    }
 }
 </script>
 
