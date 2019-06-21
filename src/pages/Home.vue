@@ -47,6 +47,10 @@ export default {
       getTokenInfo(localStorage.getItem('accessToken'))
         .then((res) => {
           this.user = res.data; 
+        })
+        .catch(err => {
+          localStorage.removeItem('accessToken');
+          this.$router.push('/');
         });
 
         console.log*("res")
