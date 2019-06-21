@@ -1,25 +1,40 @@
 <template>
-
-<div>
-    <h1>Bem vindo ao gerenciador de leiloes
-
-    </h1>
-    <input type="text" name="" id="" placeholder="Usuário">
-    <input type="text" placeholder="senha">
+  <div>
+    <h1>Bem vindo ao gerenciador de leiloes</h1>
+    <input v-model="username" type="text" id="username" placeholder="Usuário">
+    <input v-model="password" type="password" id="password" placeholder="Senha">
     <button @click="validate">Entrar</button>
-</div>
-    
+  </div>
 </template>
 
 <script>
-export default {
+import * as auth from '../services/auth';
 
-    methods:{
-        validate(){
-            this.$router.push('\home')
+export default {
+  data () {
+    return {
+      username: '',
+      password: '',
+    };
+  },
+  methods:{
+    async validate() {
+      try {
+        const response = await auth.createToken(this.username, this.password);
+        localStorage.setItem('accessToken', response.data.token);
+        this.$router.push('/home');
+      } catch (err) {
+        const errCode = err.response &&
+          err.response.data &&
+          err.response.data.code;
+        switch (errCode) {
+          case 'NOT_AUTHORIZED': 
+            alert('Credenciais invalidas');
+            break;
         }
+      }
     }
-    
+  }  
 }
 </script>
 
