@@ -21,10 +21,15 @@ export default {
     },
     data(){
         return{
-            currentBid: ""
+            currentBid: "",
+            accessToken: sessionStorage.getItem(accessToken) || ""
         }
     },
-
+    
+    mounted(){
+        console.log(this.accessToken)
+    },
+    
     methods:{
 
         makeBid(){
