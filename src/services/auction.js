@@ -15,3 +15,9 @@ export const postBid = (accessToken, data) => Http.post('/auctions/' + data.id +
     Authorization: accessToken,
   }
 })
+
+export const finishAuction = (accessToken, auctionId) => Http.patch(`/auctions/${auctionId}/finish`, null, {
+  headers: {
+    Authorization: accessToken,
+  },
+});

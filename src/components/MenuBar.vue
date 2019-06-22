@@ -8,7 +8,7 @@
                 <a href="/new-auction">Novo Leilão</a>
             </li>
             <LI>
-                <a href="#" @click="logout">Sair</a>
+                <a href="#" @click="handleLogout">{{ hasToken ? 'Sair' : 'Entrar' }}</a>
             </LI>
         </ul>
     </div>
@@ -16,8 +16,11 @@
 
 <script>
 export default {
+  data() {
+    return { hasToken: !!localStorage.getItem('accessToken') };
+  },
     methods: {
-      logout() {
+      handleLogout() {
         localStorage.removeItem('accessToken');
         this.$router.push('/');
       }

@@ -1,9 +1,10 @@
 <template>
 <div class="item">
     <h3>{{item.id}} - {{item.title}}</h3>
-    <p>Current bid: {{item.price}}</p>
-    <input type="number" name="" id="" placeholder="Place your bid here" v-model.lazy="currentBid">
-    <button @click="makeBid">make a bid</button>
+    <p>Current bid: $ {{item.price}}</p>
+    <input v-if="user && user.username !== item.creator" type="number" name="" id="" placeholder="Place your bid here" v-model.lazy="currentBid">
+    <button v-if="user && user.username !== item.creator" @click="makeBid">make a bid</button>
+    <button v-if="user && user.username === item.creator" @click="finish">finish</button>
     <br>
     <br>
 </div>
@@ -11,47 +12,58 @@
 </template>
 
 <script>
-import {postBid} from '../services/auction'
+import {postBid, finishAuction} from '../services/auction'
 export default {
     props:{
         item:{
             required: true,
             type: Object
+        },
+        user: {
+          required: false,
+          type: Object
+        },
+        onChange: {
+          required: true,
+          type: Function,
         }
     },
     data(){
         return{
-            currentBid: "",
-            accessToken: localStorage.getItem('accessToken') || "(no token)"
-        }
+            currentBid: 0,
+        } 
     },
-    
-    mounted(){
-        
-    },
-    
     methods:{
+        async finish() {
+          await finishAuction(localStorage.getItem('accessToken'), this.item.id);
+          this.onChange();
+          alert('Leilao finalizado com sucesso!');
+        },
 
-        makeBid(){
-            if(this.currentBid <= this.item.price){
-                alert("Seu lance deve ser maior que o lance anterior!")
-            } else {
-                const data = {
-                    id: this.item.id,
-                    price: this.currentBid
-                }
-
-                postBid(this.accessToken, data)
-                .then( res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        async makeBid() {
+          try {
+            await postBid(localStorage.getItem('accessToken'), {
+              id: this.item.id,
+              price: parseFloat(this.currentBid),
+            });
+            this.currentBid = '';
+            this.onChange();
+            alert('Lance adicionado com sucesso!');
+          } catch (err) {
+            console.log(err);
+            const errCode = err.response &&
+              err.response.data &&
+              err.response.data.code;
+            switch (errCode) {
+              case 'INVALID_PRICE':
+                alert("Seu lance deve ser maior que o lance anterior!");
+                break;
+              case 'INSUFFICIENT_FUNDS':
+                alert('Saldo insuficiente para realizar o lance.');
+                break;
             }
-
+          }
         }
-
     }
     
 }

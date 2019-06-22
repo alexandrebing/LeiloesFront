@@ -23,8 +23,8 @@ export default {
   methods: {
     async create() {
       await createAuction(localStorage.getItem('accessToken'), {
-        title: this.title,
-        price: this.price,
+        title: this.title.trim(),
+        price: parseFloat(this.price),
       });
       this.$router.push('/home');
     }
