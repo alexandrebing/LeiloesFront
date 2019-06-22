@@ -20,20 +20,7 @@ export default {
     data(){
         return{
             user: null,
-            items: [{
-                name: "Piano",
-                currentBid: 3200
-             },{
-                 name: "Porshe Carrera",
-                 currentBid: 77000
-             } , {
-                 name: "Quadro Monert",
-                 currentBid: 620000
-                 },
-                 {
-                     name: "Nintendo Wii",
-                     currentBid: 670
-                 }],
+            items: "",
             userBid: 0
         }
     },
@@ -53,13 +40,14 @@ export default {
           this.$router.push('/');
         });
 
+        const self = this
         console.log*("res")
         const gameID = {
             gameID: 10000
         }
         getAuctions()
         .then( res => {
-            console.log(res)
+            self.items = res.data
         })
 
     },

@@ -1,7 +1,7 @@
 <template>
 <div class="item">
-    <h3>{{item.name}}</h3>
-    <p>Current bid: {{item.currentBid}}</p>
+    <h3>{{item.id}} - {{item.title}}</h3>
+    <p>Current bid: {{item.price}}</p>
     <input type="number" name="" id="" placeholder="Place your bid here" v-model.lazy="currentBid">
     <button @click="makeBid">make a bid</button>
     <br>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import {postBid} from '../services/auction'
 export default {
     props:{
         item:{
@@ -20,17 +21,33 @@ export default {
     },
     data(){
         return{
-            currentBid: ""
+            currentBid: "",
+            accessToken: localStorage.getItem('accessToken') || "(no token)"
         }
     },
-
+    
+    mounted(){
+        
+    },
+    
     methods:{
 
         makeBid(){
-            if(this.currentBid <= this.item.currentBid){
+            if(this.currentBid <= this.item.price){
                 alert("Seu lance deve ser maior que o lance anterior!")
             } else {
-                console.log("lance enviado para a API")
+                const data = {
+                    id: this.item.id,
+                    price: this.currentBid
+                }
+
+                postBid(this.accessToken, data)
+                .then( res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             }
 
         }
