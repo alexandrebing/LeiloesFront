@@ -9,3 +9,9 @@ export const createAuction = (accessToken, data) => Http.post('/auctions', data,
     Authorization: accessToken,
   },
 });
+
+export const postBid = (accessToken, data) => Http.post('/auctions/'+ data.id + '/bids', data, {
+    headers: {
+        Authorization: accessToken,
+      }
+})
