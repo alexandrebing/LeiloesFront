@@ -1,6 +1,6 @@
 <template>
 <div class="item">
-    <h3>{{item.title}}</h3>
+    <h3>{{item.id}} - {{item.title}}</h3>
     <p>Current bid: {{item.price}}</p>
     <input type="number" name="" id="" placeholder="Place your bid here" v-model.lazy="currentBid">
     <button @click="makeBid">make a bid</button>
@@ -22,31 +22,31 @@ export default {
     data(){
         return{
             currentBid: "",
-            accessToken: sessionStorage.getItem(accessToken) || ""
+            accessToken: localStorage.getItem('accessToken') || "(no token)"
         }
     },
     
     mounted(){
-        console.log(this.accessToken)
+        
     },
     
     methods:{
 
         makeBid(){
-            const itemPrice = this.item.price
             if(this.currentBid <= this.item.price){
                 alert("Seu lance deve ser maior que o lance anterior!")
             } else {
-                console.log("lance enviado para a API")
-
                 const data = {
                     id: this.item.id,
                     price: this.currentBid
                 }
 
-                postBid(data)
+                postBid(this.accessToken, data)
                 .then( res => {
                     console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
                 })
             }
 
