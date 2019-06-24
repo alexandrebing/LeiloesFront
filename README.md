@@ -12,16 +12,16 @@
 
 ## Iniciando
 - Clone o repositório:  
-`git clone https://github.com/alexandrebing/LeiloesFront.git`
+`$ git clone https://github.com/alexandrebing/LeiloesFront.git`
 
 - Entre no diretório:  
-`cd LeiloesFront`
+`$ cd LeiloesFront`
 
 - Instale as dependências:  
 `npm install`
 
 - Iniciando o projeto para desenvolvimento:  
-`npm start`
+`$ npm start`
 
 - Acesse no navegador:  
 `http://localhost:8080`
@@ -34,10 +34,10 @@
 npm install
 
 # iniciar servidor em localhost:8080
-npm run dev
+$ npm run dev
 
 # build para produção
-npm run build
+$ npm run build
 ```
 
 ## Saiba mais
